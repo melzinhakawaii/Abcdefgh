@@ -1,11 +1,265 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>bom dea</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>calculadora kawaii</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#ffe0ec;--bg2:#fff4f8;--dots:none;--dot-size:auto;
+  --shell:#fff;--edge:#ffa9c9;--edge-style:solid;
+  --screen:#fff0f6;--s-ink:#8a3b5c;--s-dim:#c58aa5;
+  --key:#ffeaf2;--k-ink:#8a3b5c;--k-edge:#f4a3c4;
+  --op:#ffc4dc;--o-ink:#8a3b5c;--eq:#ff6fa2;--e-ink:#fff;--fn:#fff0b3;--f-ink:#8a6a1c;
+  --ink:#8a3b5c;--chip:#fff;--chip-on:#ff6fa2;--chip-on-ink:#fff;
+  color-scheme:light;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+[data-theme="pastelgoth"]{
+  --bg1:#150f20;--bg2:#2b2040;--shell:#241a36;--edge:#b9a2ff;
+  --screen:#100b1a;--s-ink:#b8ffe3;--s-dim:#6f8f89;
+  --key:#382b50;--k-ink:#efe6ff;--k-edge:#8a74d0;
+  --op:#4b3a70;--o-ink:#ffb8e1;--eq:#ff9ad5;--e-ink:#1a1425;--fn:#2c5a52;--f-ink:#b8ffe3;
+  --ink:#e6dcff;--chip:#241a36;--chip-on:#b9a2ff;--chip-on-ink:#150f20;color-scheme:dark;
+}
+[data-theme="gurokawa"]{
+  --bg1:#ecd3d3;--bg2:#f8eee8;--shell:#f9efe9;--edge:#9c1222;--edge-style:dashed;
+  --screen:#2a0a0e;--s-ink:#ff4357;--s-dim:#9b4a52;
+  --key:#fff6f1;--k-ink:#7a0c18;--k-edge:#c9384a;
+  --op:#f3b9bf;--o-ink:#7a0c18;--eq:#c4132a;--e-ink:#fff;--fn:#e6d2c0;--f-ink:#5a1a1a;
+  --ink:#7a0c18;--chip:#fff6f1;--chip-on:#c4132a;--chip-on-ink:#fff;
+}
+[data-theme="yamikawaii"]{
+  --bg1:#12061c;--bg2:#2d0f3b;--shell:#1c0e2a;--edge:#ff5fa8;
+  --screen:#0b0513;--s-ink:#ff8fd0;--s-dim:#7a3f68;
+  --key:#2c1741;--k-ink:#ffd3ee;--k-edge:#6c2f92;
+  --op:#5b1f70;--o-ink:#fff;--eq:#ff4f9b;--e-ink:#fff;--fn:#e9f27a;--f-ink:#2b0f3a;
+  --ink:#ffc2e4;--chip:#1c0e2a;--chip-on:#ff5fa8;--chip-on-ink:#12061c;color-scheme:dark;
+}
+[data-theme="chocogirl"]{
+  --bg1:#3a2118;--bg2:#5d3828;--shell:#4a2c1f;--edge:#f3c9a8;
+  --screen:#291610;--s-ink:#ffd9b8;--s-dim:#a07a60;
+  --key:#fff0e0;--k-ink:#5a3022;--k-edge:#d4a074;
+  --op:#e8b08a;--o-ink:#3a2118;--eq:#ff8fa3;--e-ink:#3a2118;--fn:#c98a5e;--f-ink:#fff4e8;
+  --ink:#ffe6d0;--chip:#4a2c1f;--chip-on:#ff8fa3;--chip-on-ink:#3a2118;color-scheme:dark;
+}
+[data-theme="biscuitcore"]{
+  --bg1:#f1e2c8;--bg2:#e6cfa6;--shell:#f8eed9;--edge:#c9995a;
+  --screen:#fff9ea;--s-ink:#6b4423;--s-dim:#b8996f;
+  --key:#fff7e6;--k-ink:#6b4423;--k-edge:#d6b077;
+  --op:#ebcf98;--o-ink:#6b4423;--eq:#d08a3e;--e-ink:#fff;--fn:#f3dcb0;--f-ink:#8a5a2b;
+  --ink:#6b4423;--chip:#f8eed9;--chip-on:#d08a3e;--chip-on-ink:#fff;
+}
+[data-theme="decora"]{
+  --bg1:#ffc2ec;--bg2:#b8f0ff;
+  --dots:radial-gradient(rgba(255,255,255,.75) 20%,transparent 22%);--dot-size:30px 30px;
+  --shell:#fff48a;--edge:#ff3fb0;
+  --screen:#ffffff;--s-ink:#ff2fa0;--s-dim:#b78ae8;
+  --key:#ffffff;--k-ink:#7a2dd9;--k-edge:#2fc8ea;
+  --op:#b6f261;--o-ink:#5a1fb0;--eq:#ff3fb0;--e-ink:#fff;--fn:#8fe3ff;--f-ink:#7a2dd9;
+  --ink:#7a2dd9;--chip:#fff;--chip-on:#ff3fb0;--chip-on-ink:#fff;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  min-height:100vh;font-family:'Fredoka','Nunito','Trebuchet MS',system-ui,sans-serif;color:var(--ink);
+  background-image:var(--dots),linear-gradient(160deg,var(--bg1),var(--bg2));
+  background-size:var(--dot-size),auto;background-color:var(--bg1);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:28px 14px;
+  position:relative;overflow-x:hidden;transition:color .4s;
+}
+h1{margin:0;font-size:1.25rem;font-weight:600;letter-spacing:.04em;position:relative;z-index:1}
+#deco{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+#deco span{position:absolute;font-size:2rem;opacity:.55;animation:bob 6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-12px) rotate(8deg)}}
+.shell{
+  position:relative;z-index:1;isolation:isolate;width:min(92vw,350px);padding:18px;
+  background:var(--shell);border:4px var(--edge-style) var(--edge);border-radius:36px;
+  box-shadow:0 10px 0 var(--edge),0 22px 34px rgba(0,0,0,.18);transition:background .4s,border-color .4s;
+}
+.shell::before,.shell::after{
+  content:"";position:absolute;top:-17px;width:46px;height:46px;background:var(--edge);border-radius:14px;z-index:-1;
+}
+.shell::before{left:26px;transform:rotate(-18deg)}
+.shell::after{right:26px;transform:rotate(18deg)}
+.screen{
+  background:var(--screen);border-radius:22px;padding:10px 16px 14px;margin-bottom:16px;
+  color:var(--s-ink);font-family:'DotGothic16',ui-monospace,monospace;min-height:130px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  box-shadow:inset 0 3px 0 rgba(0,0,0,.12);transition:background .4s;
+}
+#face{font-size:1.15rem;min-height:1.6em;white-space:nowrap}
+#expr{text-align:right;color:var(--s-dim);font-size:.95rem;min-height:1.3em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#out{text-align:right;font-size:2.6rem;line-height:1.1;overflow:hidden;white-space:nowrap}
+#out.m{font-size:1.9rem}#out.s{font-size:1.4rem}
+.keys{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.keys button{
+  font:600 1.5rem 'Fredoka',system-ui,sans-serif;height:58px;border:3px solid var(--k-edge);border-radius:20px;
+  background:var(--key);color:var(--k-ink);cursor:pointer;box-shadow:0 5px 0 var(--k-edge);
+  transition:transform .08s,box-shadow .08s,background .4s;
+}
+.keys button:active{transform:translateY(4px);box-shadow:0 1px 0 var(--k-edge)}
+.keys button:focus-visible,.chips button:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.keys .op{background:var(--op);color:var(--o-ink)}
+.keys .fn{background:var(--fn);color:var(--f-ink)}
+.keys .eq{background:var(--eq);color:var(--e-ink)}
+.keys .wide{grid-column:span 2}
+.chips{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:380px}
+.chips button{
+  font:600 .9rem 'Fredoka',system-ui,sans-serif;padding:8px 14px;border-radius:999px;cursor:pointer;
+  border:2px solid var(--edge);background:var(--chip);color:var(--ink);
+}
+.chips button[aria-pressed="true"]{background:var(--chip-on);color:var(--chip-on-ink);border-color:var(--chip-on)}
+@media (prefers-reduced-motion:reduce){#deco span{animation:none}*{transition:none!important}}
+</style>
 </head>
-<body>
-    <h1>oi pessoal</h1>
+<body data-theme="milkberry">
+<div id="deco" aria-hidden="true"></div>
+<h1>kawaii calculator</h1>
+<main class="shell">
+  <div class="screen" aria-live="polite">
+    <div id="face" aria-hidden="true"></div>
+    <div id="expr"></div>
+    <div id="out">0</div>
+  </div>
+  <div class="keys" id="keys">
+    <button class="fn" data-k="AC" aria-label="Clear">AC</button>
+    <button class="fn" data-k="BK" aria-label="Delete">⌫</button>
+    <button class="fn" data-k="%">%</button>
+    <button class="op" data-k="÷" aria-label="Divide">÷</button>
+    <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button>
+    <button class="op" data-k="×" aria-label="Multiply">×</button>
+    <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button>
+    <button class="op" data-k="-" aria-label="Subtract">−</button>
+    <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button>
+    <button class="op" data-k="+" aria-label="Add">+</button>
+    <button class="wide" data-k="0">0</button><button data-k=".">.</button>
+    <button class="eq" data-k="=" aria-label="Equals">=</button>
+  </div>
+</main>
+<nav class="chips" id="chips" aria-label="Themes"></nav>
+
+<script>
+const THEMES={
+  milkberry:{label:"🍓 milkberry",deco:["🍓","🎀","🥛","💗","✨"],face:{idle:"( ˘ ³˘)♡",press:"(๑>ᴗ<๑)",happy:"ヽ(>∀<☆)ノ",sad:"(｡•́︿•̀｡)"}},
+  pastelgoth:{label:"🦇 pastel goth",deco:["🦇","🖤","⛓️","🌙","🕸️"],face:{idle:"(˘⌣˘) 🖤",press:"(•‿•)",happy:"(≧▽≦) ✝",sad:"(；⌣̀_⌣́)"}},
+  gurokawa:{label:"🩹 gurokawa",deco:["🩹","🩸","💉","🧸","🖤"],face:{idle:"(◕ᴗ◕✿) 🩹",press:"(◉‿◉)",happy:"(◕▿◕)♡ 🩸",sad:"(×﹏×)"}},
+  yamikawaii:{label:"💊 yamikawaii",deco:["💊","🎀","🌙","💉","🖤"],face:{idle:"(´-ω-`) 💊",press:"(◎_◎)",happy:"(♡ω♡)",sad:"(；ω；)"}},
+  chocogirl:{label:"🍫 chocogirl",deco:["🍫","🍓","🤎","🧁","☕"],face:{idle:"(｡◕‿◕｡) 🍫",press:"(๑•ㅅ•๑)",happy:"(๑˃ᴗ˂)ﻭ",sad:"(｡•́︿•̀｡)"}},
+  biscuitcore:{label:"🍪 biscuitcore",deco:["🍪","🥐","🧈","🌾","🥛"],face:{idle:"(・ω・) 🍪",press:"(•ᴗ•)",happy:"( ´ ▽ ` )ﾉ",sad:"(´；ω；`)"}},
+  decora:{label:"🌈 decora",deco:["🌈","⭐","🦄","🍭","🎀","💖","🍬","🧸"],face:{idle:"(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧",press:"(★ω★)",happy:"٩(◕‿◕｡)۶ ✧",sad:"(╥﹏╥)"}}
+};
+const $=id=>document.getElementById(id);
+let theme="milkberry",faceTimer;
+
+function setFace(mood,hold){
+  clearTimeout(faceTimer);
+  $("face").textContent=THEMES[theme].face[mood];
+  if(mood!=="idle"&&!hold)faceTimer=setTimeout(()=>setFace("idle"),650);
+}
+function setTheme(t){
+  theme=t;document.body.dataset.theme=t;
+  document.querySelectorAll("#chips button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.t===t));
+  const d=$("deco");d.innerHTML="";
+  const spots=[[6,8],[84,6],[10,48],[88,40],[5,82],[80,86],[46,92],[50,3]];
+  spots.forEach((p,i)=>{
+    const s=document.createElement("span");
+    s.textContent=THEMES[t].deco[i%THEMES[t].deco.length];
+    s.style.left=p[0]+"%";s.style.top=p[1]+"%";s.style.animationDelay=(i*0.7)+"s";
+    d.appendChild(s);
+  });
+  setFace("happy");
+  try{localStorage.setItem("kawaii-theme",t)}catch(e){}
+}
+const chips=$("chips");
+Object.keys(THEMES).forEach(k=>{
+  const b=document.createElement("button");
+  b.dataset.t=k;b.textContent=THEMES[k].label;b.setAttribute("aria-pressed","false");
+  b.onclick=()=>setTheme(k);chips.appendChild(b);
+});
+
+/* calculator */
+let cur="0",prev=null,op=null,fresh=false,err=false;
+const F={"+":(a,b)=>a+b,"-":(a,b)=>a-b,"×":(a,b)=>a*b,"÷":(a,b)=>a/b};
+const toStr=n=>{
+  let s=String(parseFloat(n.toPrecision(12)));
+  if(s.length>12)s=n.toExponential(5).replace(/\.?0+e/,"e");
+  return s;
+};
+function show(expr){
+  const o=$("out");o.textContent=cur;
+  o.className=cur.length>14?"s":cur.length>9?"m":"";
+  $("expr").textContent=expr!==undefined?expr:(op?toStr(prev)+" "+(op==="-"?"−":op):"");
+}
+function fail(msg){err=true;cur=msg;op=null;prev=null;show("");setFace("sad");}
+function digit(d){
+  if(err)clearAll();
+  if(fresh){cur="0";fresh=false;}
+  if(cur.replace(/[-.]/g,"").length>=12)return;
+  cur=cur==="0"?d:cur+d;show();setFace("press");
+}
+function dot(){
+  if(err)clearAll();
+  if(fresh){cur="0";fresh=false;}
+  if(!cur.includes("."))cur+=".";show();setFace("press");
+}
+function calc(){
+  const b=Number(cur);
+  if(op==="÷"&&b===0){fail("can’t ÷ 0");return null;}
+  return F[op](prev,b);
+}
+function setOp(o){
+  if(err)return;
+  if(op&&!fresh){const r=calc();if(r===null)return;cur=toStr(r);}
+  prev=Number(cur);op=o;fresh=true;show();setFace("press");
+}
+function equals(){
+  if(err||!op)return;
+  const a=prev,b=Number(cur),o=op,r=calc();
+  if(r===null)return;
+  cur=toStr(r);op=null;prev=null;fresh=true;
+  show(toStr(a)+" "+(o==="-"?"−":o)+" "+toStr(b)+" =");setFace("happy");
+}
+function clearAll(){cur="0";prev=null;op=null;fresh=false;err=false;show();setFace("idle");}
+function back(){
+  if(err)return clearAll();
+  if(fresh)return;
+  cur=cur.length>1?cur.slice(0,-1):"0";
+  if(cur==="-")cur="0";
+  show();setFace("press");
+}
+function percent(){
+  if(err)return;
+  cur=toStr(Number(cur)/100);fresh=true;show();setFace("press");
+}
+function press(k){
+  if(/^[0-9]$/.test(k))digit(k);
+  else if(k===".")dot();
+  else if(F[k])setOp(k);
+  else if(k==="=")equals();
+  else if(k==="AC")clearAll();
+  else if(k==="BK")back();
+  else if(k==="%")percent();
+}
+$("keys").addEventListener("click",e=>{
+  const b=e.target.closest("button");if(b)press(b.dataset.k);
+});
+document.addEventListener("keydown",e=>{
+  if(e.ctrlKey||e.metaKey||e.altKey)return;
+  const m={"*":"×","x":"×","/":"÷","Enter":"=","Backspace":"BK","Escape":"AC","Delete":"AC",",":"."};
+  const k=m[e.key]||e.key;
+  if(/^[0-9]$/.test(k)||[".","+","-","×","÷","=","BK","AC","%"].includes(k)){
+    if(e.target.closest&&e.target.closest("button")&&(e.key==="Enter"))return;
+    e.preventDefault();press(k);
+  }
+});
+
+let saved="milkberry";
+try{const s=localStorage.getItem("kawaii-theme");if(s&&THEMES[s])saved=s;}catch(e){}
+setTheme(saved);show();
+</script>
 </body>
 </html>
